@@ -1,0 +1,16 @@
+INSERT INTO brands (name)
+VALUES ('McCormick'),
+       ('Kraft'),
+       ('Nestle'),
+       ('General Mills'),
+       ('Kellogg’s'),
+       ('PepsiCo'),
+       ('Coca-Cola'),
+       ('Unilever'),
+       ('Heinz'),
+       ('Tyson Foods'),
+       ('ConAgra Foods'),
+       ('Campbell Soup'),
+       ('Mars'),
+       ('Hormel Foods'),
+       ('Smithfield Foods');

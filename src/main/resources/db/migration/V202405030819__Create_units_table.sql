@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `units`
+(
+    `id`      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `name`    VARCHAR(255) NOT NULL UNIQUE,
+    `type_id` INT UNSIGNED,
+    FOREIGN KEY (`type_id`) REFERENCES `unit_types` (`id`) ON DELETE SET NULL
+);

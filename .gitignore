@@ -1,0 +1,23 @@
+# Local environmental variables
+.env
+
+# Intellij
+.idea/
+
+
+# Gradle
+.gradle/
+build/
+
+# Windows
+Thumbs.db
+
+# Certs
+certs/
+
+# temp stuff
+temp/
+
+# Can commit apis after stripping out jwt tokens
+bruno
+

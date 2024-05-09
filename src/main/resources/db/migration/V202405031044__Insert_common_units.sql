@@ -1,0 +1,17 @@
+INSERT INTO units (name)
+VALUES ('Teaspoon'),
+       ('Tablespoon'),
+       ('Cup'),
+       ('Fluid Ounce'),
+       ('Liter'),
+       ('Milliliter'),
+       ('Pound'),
+       ('Ounce'),
+       ('Gram'),
+       ('Kilogram'),
+       ('Piece'),
+       ('Pinch'),
+       ('Dash'),
+       ('Gallon'),
+       ('Quart'),
+       ('Pint');
