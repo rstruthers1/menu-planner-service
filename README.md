@@ -1,0 +1,1 @@
+Simple menu planner service
