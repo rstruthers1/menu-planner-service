@@ -37,6 +37,9 @@ public class AuthController {
     @Value("${jwt.cookie.secure}")
     private boolean jwtCookieSecure;
 
+    @Value("${jwt.cookie.same.site}")
+    private String jwtCookieSameSite;
+
     public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserRepository userRepository,
                           PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
@@ -60,7 +63,7 @@ public class AuthController {
                     .secure(jwtCookieSecure)   // Ensures the cookie is sent only over HTTPS
                     .path("/")      // Cookie accessible for entire domain
                     .maxAge(24 * 60 * 60) // Sets max age of cookie to 1 day
-//                    .sameSite("Lax")  // Prevents CSRF
+                    .sameSite(jwtCookieSameSite)  // Prevents CSRF
                     .build();
 
             LoginResponse loginRes = new LoginResponse(email);
@@ -126,7 +129,7 @@ public class AuthController {
 //                .secure(true)   // Ensures the cookie is sent only over HTTPS
                 .path("/")      // Cookie accessible for entire domain
                 .maxAge(0) // Sets max age of cookie to 0
-//                .sameSite("Strict")  // Prevents CSRF
+                .sameSite("Strict")  // Prevents CSRF
                 .build();
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).build();
