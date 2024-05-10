@@ -1,0 +1,8 @@
+-- V202405100001__Create_meals_table.sql
+CREATE TABLE IF NOT EXISTS meals
+(
+    id   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    url  VARCHAR(255) NULL,
+    description TEXT NULL
+);

@@ -19,6 +19,7 @@ public class MainClass {
             System.setProperty("spring.datasource.password", dotenv.get("JDBC_PASSWORD"));
             System.setProperty("jwt.secret", dotenv.get("JWT_SECRET"));
             System.setProperty("jwt.cookie.secure", dotenv.get("JWT_COOKIE_SECURE"));
+            System.setProperty("jwt.cookie.same.site", dotenv.get("JWT_COOKIE_SAME_SITE"));
         }
         SpringApplication.run(MainClass.class, args);
     }
