@@ -65,8 +65,9 @@ public class AuthController {
                     .maxAge(24 * 60 * 60) // Sets max age of cookie to 1 day
                     .sameSite(jwtCookieSameSite)  // Prevents CSRF
                     .build();
-
-            LoginResponse loginRes = new LoginResponse(email);
+            User user = userRepository.findByEmail(email);
+            Long tokenExpiry = jwtService.getExpiryDate(token).getTime();
+            LoginResponse loginRes = new LoginResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), tokenExpiry);
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(loginRes);
         }
         catch (UsernameNotFoundException e) {

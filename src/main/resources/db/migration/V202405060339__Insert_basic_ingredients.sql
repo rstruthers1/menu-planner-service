@@ -1,4 +1,4 @@
-INSERT INTO homemenuplanner.ingredients (name, plural_form) VALUES
+INSERT INTO ingredients (name, plural_form) VALUES
 -- Vegetables
 ('Tomato', 'Tomatoes'),
 ('Grape Tomato', 'Grape Tomatoes'),

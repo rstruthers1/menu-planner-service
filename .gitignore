@@ -21,3 +21,5 @@ temp/
 # Can commit apis after stripping out jwt tokens
 bruno
 
+*groovy*.jar
+
