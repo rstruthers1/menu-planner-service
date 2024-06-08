@@ -8,7 +8,7 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello from Home Menu Planner";
+        return "Hi from Home Menu Planner";
     }
 
     @GetMapping("/helloAuth")

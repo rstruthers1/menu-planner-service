@@ -1,12 +1,12 @@
 package com.homemenuplanner.dtos.meal;
 
-public class CreateMealResponse {
+public class MealResponse {
     private Long id;
     private String name;
     private String description;
     private String url;
 
-    public CreateMealResponse(Long id, String name, String description, String url) {
+    public MealResponse(Long id, String name, String description, String url) {
         this.id = id;
         this.name = name;
         this.description = description;

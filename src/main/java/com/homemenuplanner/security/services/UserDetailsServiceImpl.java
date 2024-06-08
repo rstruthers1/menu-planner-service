@@ -2,7 +2,7 @@ package com.homemenuplanner.security.services;
 
 import com.homemenuplanner.models.User;
 
-import org.springframework.security.authentication.BadCredentialsException;
+import com.homemenuplanner.services.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
