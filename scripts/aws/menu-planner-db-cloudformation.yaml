@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  DBInstanceClass:
+    Description: "The database instance type"
+    Type: String
+    Default: db.t3.micro
+    AllowedValues:
+      - db.t3.micro
+      - db.t3.small
+    ConstraintDescription: "Must be a valid RDS DB instance type."
+
+  DBAllocatedStorage:
+    Description: "The size of the database (GB)"
+    Type: Number
+    Default: 20
+    MinValue: 5
+    MaxValue: 1024
+    ConstraintDescription: "Must be between 5 and 1024 GB."
+
+Resources:
+  MenuPlannerDBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: "Allow MySQL access"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '3306'
+          ToPort: '3306'
+          CidrIp: '0.0.0.0/0'
+
+  MenuPlannerDBInstance:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: mysql
+      MasterUsername: adminuser
+      MasterUserPassword: REDACTED
+      AllocatedStorage: !Ref DBAllocatedStorage
+      VPCSecurityGroups:
+        - !GetAtt MenuPlannerDBSecurityGroup.GroupId
+      DBName: MenuPlannerDB
+      PubliclyAccessible: true

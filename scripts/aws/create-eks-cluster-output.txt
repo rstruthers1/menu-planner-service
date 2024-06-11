@@ -1,0 +1,28 @@
+PS C:\Users\rstru\IdeaProjects\menuplanner\menuplanner-service> eksctl create cluster --name menu-planner --region us-east-1 --nodes 2 --node-type t3.small --nodes-min 1 --nodes-max 2 --managed
+2024-06-11 10:27:08 [ℹ]  eksctl version 0.179.0
+2024-06-11 10:27:08 [ℹ]  using region us-east-1
+2024-06-11 10:27:09 [ℹ]  skipping us-east-1e from selection because it doesn't support the following instance type(s): t3.small
+2024-06-11 10:27:09 [ℹ]  setting availability zones to [us-east-1c us-east-1d]
+2024-06-11 10:27:09 [ℹ]  subnets for us-east-1c - public:192.168.0.0/19 private:192.168.64.0/19
+2024-06-11 10:27:09 [ℹ]  subnets for us-east-1d - public:192.168.32.0/19 private:192.168.96.0/19
+2024-06-11 10:27:09 [ℹ]  nodegroup "ng-7248989a" will use "" [AmazonLinux2/1.29]
+2024-06-11 10:27:09 [ℹ]  using Kubernetes version 1.29
+2024-06-11 10:27:09 [ℹ]  creating EKS cluster "menu-planner" in "us-east-1" region with managed nodes
+2024-06-11 10:27:09 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial managed nodegroup
+2024-06-11 10:27:09 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --cluster=menu-planner'
+2024-06-11 10:27:09 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "menu-planner" in "us-east-1"
+2024-06-11 10:27:09 [ℹ]  CloudWatch logging will not be enabled for cluster "menu-planner" in "us-east-1"
+2024-06-11 10:27:09 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=us-east-1 --cluster=menu-planner'
+2024-06-11 10:27:09 [ℹ]
+2 sequential tasks: { create cluster control plane "menu-planner",
+    2 sequential sub-tasks: {
+        wait for control plane to become ready,
+        create managed nodegroup "ng-7248989a",
+    }
+}
+2024-06-11 10:27:09 [ℹ]  building cluster stack "eksctl-menu-planner-cluster"
+2024-06-11 10:27:10 [ℹ]  deploying stack "eksctl-menu-planner-cluster"
+2024-06-11 10:27:40 [ℹ]  waiting for CloudFormation stack "eksctl-menu-planner-cluster"
+2024-06-11 10:28:11 [ℹ]  waiting for CloudFormation stack "eksctl-menu-planner-cluster"
+2024-06-11 10:29:11 [ℹ]  waiting for CloudFormation stack "eksctl-menu-planner-cluster"
+2024-06-11 10:30:11 [ℹ]  waiting for CloudFormation stack "eksctl-menu-planner-cluster"

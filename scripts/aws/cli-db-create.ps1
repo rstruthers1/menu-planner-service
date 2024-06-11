@@ -1,0 +1,1 @@
+aws cloudformation create-stack --stack-name MenuPlannerDatabaseStack --template-body file://menu-planner-db-cloudformation.yaml --region us-east-1 --parameters ParameterKey=DBInstanceClass,ParameterValue=db.t3.micro ParameterKey=DBAllocatedStorage,ParameterValue=20
