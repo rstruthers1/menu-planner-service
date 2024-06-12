@@ -45,6 +45,11 @@ spec:
                 secretKeyRef:
                   name: menuplanner-secrets
                   key: jwt-cookie-same-site
+            - name: JWT_COOKIE_SECURE
+              valueFrom:
+                secretKeyRef:
+                  name: menuplanner-secrets
+                  key: jwt-cookie-secure
       imagePullSecrets:
         - name: dockerhub-secret
 ---
