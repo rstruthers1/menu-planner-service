@@ -22,6 +22,10 @@ spec:
               value: prod
             - name: CORS_ALLOWED_ORIGIN
               value: "http://homemenuplanner-frontend.s3-website-us-east-1.amazonaws.com"
+            - name: JWT_COOKIE_SECURE
+              value: "true"
+            - name: JWT_COOKIE_SAME_SITE
+              value: "None"
             - name: JDBC_URL
               valueFrom:
                 secretKeyRef:
@@ -42,16 +46,6 @@ spec:
                 secretKeyRef:
                   name: menuplanner-secrets
                   key: jwt-secret
-            - name: JWT_COOKIE_SAME_SITE
-              valueFrom:
-                secretKeyRef:
-                  name: menuplanner-secrets
-                  key: jwt-cookie-same-site
-            - name: JWT_COOKIE_SECURE
-              valueFrom:
-                secretKeyRef:
-                  name: menuplanner-secrets
-                  key: jwt-cookie-secure
       imagePullSecrets:
         - name: dockerhub-secret
 ---
