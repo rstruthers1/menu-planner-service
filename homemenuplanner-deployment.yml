@@ -43,6 +43,8 @@ spec:
                 secretKeyRef:
                   name: menuplanner-secrets
                   key: jwt-cookie-same-site
+      imagePullSecrets:
+        - name: dockerhub-secret
 ---
 apiVersion: v1
 kind: Service
