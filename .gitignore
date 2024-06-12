@@ -23,3 +23,5 @@ bruno
 
 *groovy*.jar
 
+scripts/k8s/k8s-secrets.yml
+
