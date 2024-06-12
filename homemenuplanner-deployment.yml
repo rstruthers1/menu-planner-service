@@ -2,6 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homemenuplanner-deployment
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:777605092423:certificate/ce0aee3a-017d-48c3-b279-61feb0408a78
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: https
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    # Note that the backend talks over HTTP.
+    service.beta.kubernetes.io/aws-load-balancer-type: external
 spec:
   replicas: 2
   selector:
@@ -17,6 +23,7 @@ spec:
           image: rmstruthers1/homemenuplanner:latest
           ports:
             - containerPort: 8080
+            - containerPort: 443
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
@@ -46,6 +53,14 @@ spec:
                 secretKeyRef:
                   name: menuplanner-secrets
                   key: jwt-secret
+          volumeMounts:
+            - name: tls-secret
+              mountPath: "/etc/tls"
+              readOnly: true
+      volumes:
+        - name: tls-secret
+          secret:
+            secretName: homemenuplanner-tls-secret
       imagePullSecrets:
         - name: dockerhub-secret
 ---
@@ -57,7 +72,12 @@ spec:
   selector:
     app: homemenuplanner
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: https
+      protocol: TCP
       port: 443
       targetPort: 8080
   type: LoadBalancer

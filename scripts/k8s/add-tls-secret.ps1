@@ -1,0 +1,1 @@
+kubectl create secret tls homemenuplanner-tls-secret --key tls.key --cert tls.crt
