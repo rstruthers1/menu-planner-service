@@ -20,6 +20,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+            - name: CORS_ALLOWED_ORIGIN
+              value: "http://homemenuplanner-frontend.s3-website-us-east-1.amazonaws.com"
             - name: JDBC_URL
               valueFrom:
                 secretKeyRef:
