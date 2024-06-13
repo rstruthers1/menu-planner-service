@@ -218,6 +218,68 @@ spec:
   type: LoadBalancer
 ```
 
+## Generate and Add a Certificate to AWS
+
+### Step 1: Generate a Self-Signed Certificate (for testing purposes)
+
+You can generate a self-signed certificate using OpenSSL. Here's an example configuration file (`openssl.cnf`) and commands to generate the certificate and key.
+
+#### `openssl.cnf`:
+```ini
+[ req ]
+default_bits        = 2048
+distinguished_name  = req_distinguished_name
+req_extensions      = req_ext
+x509_extensions     = v3_req
+prompt              = no
+
+[ req_distinguished_name ]
+C                   = US
+ST                  = State
+L                   = City
+O                   = Organization
+OU                  = Organizational Unit
+CN                  = your-domain.com
+
+[ req_ext ]
+subjectAltName      = @alt_names
+
+[ v3_req ]
+keyUsage            = keyEncipherment, dataEncipherment
+extendedKeyUsage    = serverAuth
+subjectAltName      = @alt_names
+
+[ alt_names ]
+DNS.1               = your-domain.com
+DNS.2               = www.your-domain.com
+```
+
+Commands to generate the certificate and key:
+
+**NOTE: This is for testing purposes only! For production, you should get a certificate from a trusted Certificate Authority (CA).**
+
+You may need to install OpenSSL on your system. I used Windows Subsystem for Linux (WSL) to generate the certificate:
+(How to install Linux on Windows with WSL)[https://learn.microsoft.com/en-us/windows/wsl/install]
+```bash     
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -config openssl.cnf
+```
+
+### Upload the Certificate to AWS Certificate Manager (ACM)
+1. Go to the AWS Certificate Manager (ACM) in the AWS Management Console.
+2. Click on "Import a certificate".
+3. Upload the certificate (tls.crt), private key (tls.key), and the certificate chain (if applicable).
+
+### Update Kubernetes Secrets with the Certificate
+Create a Kubernetes secret with the certificate and key:
+```bash
+kubectl create secret tls homemenuplanner-tls-secret --cert=tls.crt --key=tls.key
+```
+
+Verify that the secret was created:
+```bash
+kubectl get secrets homemenuplanner-tls-secret
+```
+
 ## Ingress Configuration
 Create an Ingress resource to manage external access to the services.
 
