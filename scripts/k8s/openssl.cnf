@@ -1,0 +1,24 @@
+[ req ]
+default_bits        = 2048
+distinguished_name  = req_distinguished_name
+req_extensions      = req_ext
+x509_extensions     = v3_req
+prompt              = no
+
+[ req_distinguished_name ]
+C                   = US
+ST                  = State
+L                   = City
+O                   = Organization
+OU                  = Organizational Unit
+
+[ req_ext ]
+subjectAltName      = @alt_names
+
+[ v3_req ]
+#keyUsage            = keyEncipherment, dataEncipherment
+extendedKeyUsage    = serverAuth
+subjectAltName      = @alt_names
+
+[ alt_names ]
+DNS.1               = k8s-default-homemenu-1969234ccc-1510590667.us-east-1.elb.amazonaws.com
