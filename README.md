@@ -171,7 +171,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
             - name: CORS_ALLOWED_ORIGIN
-              value: "http://homemenuplanner-frontend.s3-website-us-east-1.amazonaws.com"
+              value: "Add react frontend url here"
             - name: JWT_COOKIE_SECURE
               value: "true"
             - name: JWT_COOKIE_SAME_SITE
