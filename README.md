@@ -66,7 +66,7 @@ See: [Getting started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/us
 
 I recommend going to the above link and following the instructions there. The following notes are to help me remember what I did. :-)
 
-**IMPORTANT NOTE: This will cost money. Either make sure to delete the cluster after you're done or set up a budget alert!!**
+**$$$IMPORTANT NOTE: This will cost money. Either make sure to delete the cluster after you're done or set up a budget alert!!$$$**
 
 This will create an EKS cluster with 2 nodes of type t3.small. The cluster will be in the us-east-1 region.
 ```bash
