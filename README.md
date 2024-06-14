@@ -309,7 +309,7 @@ DNS.2               = www.your-domain.com
 Commands to generate the certificate and key:
 
 You may need to install openssl on your system. I used Windows Subsystem for Linux (WSL) to generate the certificate:
-(How to install Linux on Windows with WSL)[https://learn.microsoft.com/en-us/windows/wsl/install]
+[How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
 ```bash     
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -config openssl.cnf
 ```
