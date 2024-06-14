@@ -44,11 +44,11 @@ public class MealController {
     }
 
     @PostMapping("/{mealId}/recipes/{recipeId}")
-    public ResponseEntity<Meal> addRecipeToMeal(@PathVariable("mealId") Long mealId, @PathVariable("recipeId") Long recipeId) {
+    public ResponseEntity<?> addRecipeToMeal(@PathVariable("mealId") Long mealId, @PathVariable("recipeId") Long recipeId) {
         Meal meal = mealService.addRecipeToMeal(mealId, recipeId);
 
         if (meal != null) {
-            return ResponseEntity.ok(meal);
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
         }
