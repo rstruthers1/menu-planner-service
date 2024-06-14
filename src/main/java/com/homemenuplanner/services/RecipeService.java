@@ -44,15 +44,23 @@ public class RecipeService {
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequest.getName());
         recipe.setInstructions(recipeRequest.getInstructions());
-        Recipe savedRecipe = recipeRepository.save(recipe);
-        Set<RecipeIngredient> recipeIngredients = new HashSet<>();
-        for (RecipeIngredientRequest recipeIngredientRequest : recipeRequest.getIngredients()) {
-            RecipeIngredient recipeIngredient = getRecipeIngredient(recipeIngredientRequest, savedRecipe);
-            recipeIngredients.add(recipeIngredient);
+        recipe.setDescription(recipeRequest.getDescription());
+        recipe.setCookbook(recipeRequest.getCookbook());
+        recipe.setPage(recipeRequest.getPage());
+        recipe.setUrl(recipeRequest.getUrl());
 
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        if (recipeRequest.getIngredients() != null) {
+            Set<RecipeIngredient> recipeIngredients = new HashSet<>();
+            for (RecipeIngredientRequest recipeIngredientRequest : recipeRequest.getIngredients()) {
+                RecipeIngredient recipeIngredient = getRecipeIngredient(recipeIngredientRequest, savedRecipe);
+                recipeIngredients.add(recipeIngredient);
+
+            }
+            savedRecipe.setRecipeIngredients(recipeIngredients);
+
+            recipeRepository.save(savedRecipe);
         }
-        savedRecipe.setRecipeIngredients(recipeIngredients);
-        recipeRepository.save(savedRecipe);
 
         return RecipeMapper.toRecipeResponse(savedRecipe);
     }
