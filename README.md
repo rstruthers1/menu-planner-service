@@ -6,6 +6,14 @@ This is the backend for the Home Menu Planner application, built with Spring Boo
 
 The application is deployed to AWS EKS (Elastic Kubernetes Service) and uses MySQL as the database.
 
+## TODO
+* Test the backend setup steps with small hello world application
+* Update the setup steps in the README.md file of the front end repo
+* Move the prod setup steps in this file to another file
+* Add another readme file for local setup steps
+* Have this README have overview of the backend app functionality
+* Add links to prod and local setup steps
+
 ## Overview
 - [Prerequisites](#prerequisites)
 - [Setting Up Kubernetes (EKS) Cluster](#setting-up-kubernetes-eks-cluster)
