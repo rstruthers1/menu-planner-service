@@ -113,11 +113,13 @@ Cloud Formation template example: [menu-planner-db-cloudformation.yaml](scripts/
 aws cloudformation create-stack --stack-name MenuPlannerDatabaseStack --template-body file://menu-planner-db-cloudformation.yaml --region us-east-1 --parameters ParameterKey=DBInstanceClass,ParameterValue=db.t3.micro ParameterKey=DBAllocatedStorage,ParameterValue=20
 ```
 
+**Make sure to change the master password after the database is created**
+
 ## Adding Database and JWT Secrets to Kubernetes
 
 ### Step 1: Encode and Prepare Secrets
 
-Create a Kubernetest Secret Manifest Template file called `k8s-secrets-template.yml` with the following content:
+Create a Kubernetes Secret Manifest Template file called `k8s-secrets-template.yml` with the following content:
 
 ```yaml
 apiVersion: v1
@@ -191,9 +193,7 @@ kubectl apply -f k8s-secrets.yml
 **Make sure to add the k8s-secrets.yml file to your .gitignore file so that it doesn't get checked into source control.**
 
 
-
 ## Setting Up Kubernetes Deployment and Service
-  
 
 ### Deployment and Service YAML
 Create k8s/homemenuplanner-deployment.yml with the following content:
@@ -291,19 +291,20 @@ ST                  = State
 L                   = City
 O                   = Organization
 OU                  = Organizational Unit
-CN                  = your-domain.com
+# Had to comment out the CN because the load balancer domain name was too long (over 64 characters)
+#CN                  = Common Name
 
 [ req_ext ]
 subjectAltName      = @alt_names
 
 [ v3_req ]
-keyUsage            = keyEncipherment, dataEncipherment
+# I had to comment out keyUsage or I got an error in Chrome when trying to connect to the backend.
+#keyUsage            = keyEncipherment, dataEncipherment
 extendedKeyUsage    = serverAuth
 subjectAltName      = @alt_names
 
 [ alt_names ]
-DNS.1               = your-domain.com
-DNS.2               = www.your-domain.com
+DNS.1               = Use the load balancer domain name here
 ```
 
 Commands to generate the certificate and key:
@@ -333,33 +334,56 @@ kubectl get secrets homemenuplanner-tls-secret
 ## Ingress Configuration
 Create an Ingress resource to manage external access to the services.
 
+Get the service domain name by running the following command:
+```bash 
+kubectl get svc homemenuplanner-service
+```
+
+Get the load balancer domain from aws console using these steps:
+1. Go to the EC2 console.
+2. Click on Load Balancers.
+3. Click on the load balancer created by the service.
+4. Copy the DNS name.
+
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: homemenuplanner-ingress
   annotations:
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: <your certificate arn>
-    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/certificate-arn: <your-certificate-arn>
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
 spec:
+  tls:
+    - hosts:
+        - <load balancer domain name>
+        - <service domain name>
+      secretName: homemenuplanner-tls-secret
   rules:
-    - host: your-domain.com
+    - host: <load balancer domain name>
       http:
         paths:
-          - path: /*
-            pathType: ImplementationSpecific
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: homemenuplanner-service
                 port:
-                  name: http
-  tls:
-    - hosts:
-        - your-domain.com
-      secretName: homemenuplanner-tls-secret
+                  number: 80
+    - host: <service domain name>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homemenuplanner-service
+                port:
+                  number: 80
 ```
 Apply the above configuration:
 ```bash
@@ -389,8 +413,6 @@ Create a repository in GitHub and push your code to it. Use a branch instead of 
 The AWS credentials should have permissions to deploy to the EKS cluster.
 
 ### Create a .github/workflows/build-and-deploy.yml file with the following content:
-
-
 
 ```yaml
 name: Build and Deploy
