@@ -2,6 +2,8 @@ package com.homemenuplanner.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "meals")
 public class Meal {
@@ -18,6 +20,14 @@ public class Meal {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @ManyToMany
+    @JoinTable(
+            name = "meal_recipes",
+            joinColumns = @JoinColumn(name = "meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Recipe> recipes;
 
     public Meal() {}
 
@@ -57,5 +67,13 @@ public class Meal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
     }
 }

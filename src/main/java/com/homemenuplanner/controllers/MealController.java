@@ -42,4 +42,15 @@ public class MealController {
         Page<MealResponse> mealResponses = meals.map(meal -> new MealResponse(meal.getId(), meal.getName(), meal.getDescription(), meal.getUrl()));
         return new ResponseEntity<>(mealResponses, HttpStatus.OK);
     }
+
+    @PostMapping("/{mealId}/recipes/{recipeId}")
+    public ResponseEntity<Meal> addRecipeToMeal(@PathVariable("mealId") Long mealId, @PathVariable("recipeId") Long recipeId) {
+        Meal meal = mealService.addRecipeToMeal(mealId, recipeId);
+
+        if (meal != null) {
+            return ResponseEntity.ok(meal);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
