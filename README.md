@@ -1,6 +1,6 @@
 # Home Menu Planner Backend - AWS EKS, MySQL, Spring Boot
 
-**NOTE: This is incomplete and hasn't been tested!!**
+**NOTE: The backend setup instructions have not been tested. Steps could be missing or incorrect as I wrote this up after finishing the setup**
 
 This is the backend for the Home Menu Planner application, built with Spring Boot.
 
