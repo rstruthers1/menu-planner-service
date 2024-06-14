@@ -24,6 +24,19 @@ public class Recipe {
     @Column(name = "instructions")
     private String instructions;
 
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "cookbook")
+    private String cookbook;
+
+    @Column(name = "page")
+    private Integer page;
+
+    @ManyToMany(mappedBy = "recipes")
+    private Set<Meal> meals = new HashSet<>();
+
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> recipeIngredients;
 
@@ -57,6 +70,38 @@ public class Recipe {
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getCookbook() {
+        return cookbook;
+    }
+
+    public void setCookbook(String cookbook) {
+        this.cookbook = cookbook;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Set<Meal> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(Set<Meal> meals) {
+        this.meals = meals;
     }
 
     public Set<RecipeIngredient> getRecipeIngredients() {
