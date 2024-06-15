@@ -12,6 +12,7 @@ The application is deployed to AWS EKS (Elastic Kubernetes Service) and uses MyS
 * Move the prod setup steps in this file to another file
 * Add another readme file for local setup steps
 * Have this README have overview of the backend app functionality
+* Add documentation for the database model
 * Add links to prod and local setup steps
 
 ## Overview
