@@ -33,6 +33,10 @@ public class Recipe {
     @Column(name = "page")
     private Integer page;
 
+    @Column(name = "image_file_name")
+    private String imageFileName;
+
+
     @ManyToMany(mappedBy = "recipes")
     private Set<Meal> meals = new HashSet<>();
 
@@ -111,5 +115,14 @@ public class Recipe {
     public void setRecipeIngredients(Set<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
     }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
+    }
+
 
 }

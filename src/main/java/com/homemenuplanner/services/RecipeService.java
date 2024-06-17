@@ -11,7 +11,6 @@ import com.homemenuplanner.models.RecipeIngredientId;
 import com.homemenuplanner.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,18 +26,9 @@ public class RecipeService {
 
     // Converts Recipe entity to RecipeResponse
     private RecipeResponse mapToResponse(Recipe recipe) {
-        RecipeResponse response = new RecipeResponse(recipe.getId(), recipe.getName(), recipe.getInstructions(), null);
-
-        return response;
+        return new RecipeResponse(recipe.getId(), recipe.getName(), recipe.getInstructions(), null);
     }
 
-    // Converts RecipeRequest to Recipe entity
-    private Recipe mapToEntity(RecipeRequest recipeRequest) {
-        Recipe recipe = new Recipe();
-        recipe.setName(recipeRequest.getName());
-        recipe.setInstructions(recipeRequest.getInstructions());
-        return recipe;
-    }
 
     public RecipeResponse addRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = new Recipe();
@@ -48,6 +38,7 @@ public class RecipeService {
         recipe.setCookbook(recipeRequest.getCookbook());
         recipe.setPage(recipeRequest.getPage());
         recipe.setUrl(recipeRequest.getUrl());
+        recipe.setImageFileName(recipeRequest.getImageFileName());
 
         Recipe savedRecipe = recipeRepository.save(recipe);
         if (recipeRequest.getIngredients() != null) {
