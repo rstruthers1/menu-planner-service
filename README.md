@@ -79,6 +79,12 @@ eksctl create cluster --name menu-planner --region us-east-1 --nodes 2 --node-ty
 aws eks --region us-east-1 update-kubeconfig --name menu-planner
 ```
 
+## Add S3 bucket for storing images
+Run the following command to create a new S3 bucket. Update the bucket name and region
+```shell
+aws s3api create-bucket --bucket homemenuplanner-images --region us-east-1
+```
+
 ## Add AWS Load Balancer Controller
 Note: I tried to do nginx-ingress first, but couldn't get it to work. I then switched to the AWS Load Balancer Controller
 and got it to work with the following steps.
@@ -93,7 +99,7 @@ aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-
 ```
   
 ### [Create an IAM OIDC provider for your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
-I did this using the AWS Console. You can also do it using eksctl.
+Follow the instruction linked in the section header. I did this using the AWS Console. You can also do it using eksctl.
 
 ### Create IAM Service Account for Load Balancer Controller
 **Replace the policy ARN with the one you created in the previous step.**
@@ -143,10 +149,14 @@ data:
   jwt-secret: <base64-encoded-jwt-secret>
   jwt-cookie-same-site: <base64-encoded-jwt-cookie-same-site>
   jwt-cookie-secure: <base64-encoded-jwt-cookie-secure>
+  aws-access-key-id: <base64-encoded-aws-access-key-id>
+  aws-secret-key: <base64-encoded-aws-secret-key>
 
 ```
 
-Use the following PowerShell script to encode your secrets in Base64 format and create a Kubernetes secret manifest file.
+If you are using Windows OS, use the following PowerShell script to encode your secrets in Base64 format and create a Kubernetes secret manifest file.
+
+**If you are on a different OS than Windows, you will need to modify the script accordingly.**
 
 ```powershell
 # Functions to encode and decode Base64
@@ -165,6 +175,8 @@ $jdbcUrl = Read-Host "Enter your JDBC URL"
 $jwtSecret = Read-Host "Enter your JWT secret"
 $jwtCookieSameSite = Read-Host "Enter your JWT cookie same site"
 $jwtCookieSecure = Read-Host "Enter your JWT Cookie Secure"
+$awsAccessKey = Read-Host "Enter your AWS Access Key"
+$awsSecret = Read-Host "Enter your AWS Secret"
 
 # Encode secrets in Base64
 $encodedUsername = ConvertTo-Base64 $username
@@ -173,6 +185,8 @@ $encodedJdbcUrl = ConvertTo-Base64 $jdbcUrl
 $encodedJwtSecret = ConvertTo-Base64 $jwtSecret
 $encodedJwtCookieSameSite = ConvertTo-Base64 $jwtCookieSameSite
 $encodedJwtCookieSecure = ConvertTo-Base64 $jwtCookieSecure
+$encodedAwsAccessKey = ConvertTo-Base64 $awsAccessKey
+$encodedAwsSecret = ConvertTo-Base64 $awsSecret
 
 # Read the template file
 $templateFilePath = "k8s-secrets-template.yml"
@@ -185,12 +199,16 @@ $templateContent = $templateContent -replace "<base64-encoded-jdbc-url>", $encod
 $templateContent = $templateContent -replace "<base64-encoded-jwt-secret>", $encodedJwtSecret
 $templateContent = $templateContent -replace "<base64-encoded-jwt-cookie-same-site>", $encodedJwtCookieSameSite
 $templateContent = $templateContent -replace "<base64-encoded-jwt-cookie-secure>", $encodedJwtCookieSecure
+$templateContent = $templateContent -replace "<base64-encoded-aws-access-key>", $encodedAwsAccessKey
+$templateContent = $templateContent -replace "<base64-encoded-aws-secret>", $encodedAwsSecret
 
 # Write the updated content to new file
 $outputFile = "k8s-secrets.yml"
 $templateContent | Set-Content $outputFile
 
+
 Write-Output "Secrets have been encoded and new file has been created based on the template"
+
 ```
 Run the above script in PowerShell and enter the required secrets when prompted. The script will create a new file named `k8s-secrets.yml` with the encoded secrets.
 
@@ -207,11 +225,19 @@ kubectl apply -f k8s-secrets.yml
 ### Deployment and Service YAML
 Create k8s/homemenuplanner-deployment.yml with the following content:
 
+**NOTE: Make sure to replace the placeholders with your actual values.**
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homemenuplanner-deployment
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: Use the ARN of the certificate here
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: https
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    # Note that the backend talks over HTTP.
+    service.beta.kubernetes.io/aws-load-balancer-type: external
 spec:
   replicas: 2
   selector:
@@ -224,18 +250,22 @@ spec:
     spec:
       containers:
         - name: homemenuplanner
-          image: rmstruthers1/homemenuplanner:latest
+          image: your_docker_hub_user/homemenuplanner:latest
           ports:
             - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
             - name: CORS_ALLOWED_ORIGIN
-              value: "Add react frontend url here"
+              value: "Will be filled in with your react app domain"
             - name: JWT_COOKIE_SECURE
               value: "true"
             - name: JWT_COOKIE_SAME_SITE
               value: "None"
+            - name: AWS_REGION
+              value: "use your aws region here"
+            - name: AWS_BUCKET_NAME
+              value: "homemenuplanner"
             - name: JDBC_URL
               valueFrom:
                 secretKeyRef:
@@ -256,6 +286,24 @@ spec:
                 secretKeyRef:
                   name: menuplanner-secrets
                   key: jwt-secret
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: menuplanner-secrets
+                  key: aws-access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: menuplanner-secrets
+                  key: aws-secret-key
+          volumeMounts:
+            - name: tls-secret
+              mountPath: "/etc/tls"
+              readOnly: true
+      volumes:
+        - name: tls-secret
+          secret:
+            secretName: homemenuplanner-tls-secret
       imagePullSecrets:
         - name: dockerhub-secret
 ---
@@ -270,10 +318,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 8080
-    - name: https
-      protocol: TCP
-      port: 443
       targetPort: 8080
   type: LoadBalancer
 ```
@@ -315,6 +359,12 @@ subjectAltName      = @alt_names
 [ alt_names ]
 DNS.1               = Use the load balancer domain name here
 ```
+
+Get the load balancer domain from aws console using these steps:
+1. Go to the EC2 console.
+2. Click on Load Balancers.
+3. Click on the load balancer created by the service.
+4. Copy the DNS name.
 
 Commands to generate the certificate and key:
 

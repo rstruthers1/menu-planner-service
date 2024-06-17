@@ -32,6 +32,10 @@ spec:
               value: "true"
             - name: JWT_COOKIE_SAME_SITE
               value: "None"
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: AWS_BUCKET_NAME
+              value: "homemenuplanner"
             - name: JDBC_URL
               valueFrom:
                 secretKeyRef:
@@ -52,6 +56,16 @@ spec:
                 secretKeyRef:
                   name: menuplanner-secrets
                   key: jwt-secret
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: menuplanner-secrets
+                  key: aws-access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: menuplanner-secrets
+                  key: aws-secret-key
           volumeMounts:
             - name: tls-secret
               mountPath: "/etc/tls"

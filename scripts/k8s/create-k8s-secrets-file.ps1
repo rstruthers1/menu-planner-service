@@ -14,6 +14,8 @@ $jdbcUrl = Read-Host "Enter your JDBC URL"
 $jwtSecret = Read-Host "Enter your JWT secret"
 $jwtCookieSameSite = Read-Host "Enter your JWT cookie same site"
 $jwtCookieSecure = Read-Host "Enter your JWT Cookie Secure"
+$awsAccessKey = Read-Host "Enter your AWS Access Key"
+$awsSecret = Read-Host "Enter your AWS Secret"
 
 # Encode secrets in Base64
 $encodedUsername = ConvertTo-Base64 $username
@@ -22,6 +24,8 @@ $encodedJdbcUrl = ConvertTo-Base64 $jdbcUrl
 $encodedJwtSecret = ConvertTo-Base64 $jwtSecret
 $encodedJwtCookieSameSite = ConvertTo-Base64 $jwtCookieSameSite
 $encodedJwtCookieSecure = ConvertTo-Base64 $jwtCookieSecure
+$encodedAwsAccessKey = ConvertTo-Base64 $awsAccessKey
+$encodedAwsSecret = ConvertTo-Base64 $awsSecret
 
 # Read the template file
 $templateFilePath = "k8s-secrets-template.yml"
@@ -34,6 +38,8 @@ $templateContent = $templateContent -replace "<base64-encoded-jdbc-url>", $encod
 $templateContent = $templateContent -replace "<base64-encoded-jwt-secret>", $encodedJwtSecret
 $templateContent = $templateContent -replace "<base64-encoded-jwt-cookie-same-site>", $encodedJwtCookieSameSite
 $templateContent = $templateContent -replace "<base64-encoded-jwt-cookie-secure>", $encodedJwtCookieSecure
+$templateContent = $templateContent -replace "<base64-encoded-aws-access-key-id>", $encodedAwsAccessKey
+$templateContent = $templateContent -replace "<base64-encoded-aws-secret-key>", $encodedAwsSecret
 
 # Write the updated content to new file
 $outputFile = "k8s-secrets.yml"

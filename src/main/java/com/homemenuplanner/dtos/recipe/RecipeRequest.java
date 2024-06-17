@@ -11,6 +11,7 @@ public class RecipeRequest {
     private String url;
     private String cookbook;
     private Integer page;
+    private String imageFileName;
     private List<RecipeIngredientRequest> ingredients;
 
     // Getters and Setters
@@ -69,5 +70,13 @@ public class RecipeRequest {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }
