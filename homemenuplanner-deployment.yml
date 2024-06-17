@@ -35,7 +35,7 @@ spec:
             - name: AWS_REGION
               value: "us-east-1"
             - name: AWS_BUCKET_NAME
-              value: "homemenuplanner"
+              value: "homemenuplanner-images"
             - name: JDBC_URL
               valueFrom:
                 secretKeyRef:
