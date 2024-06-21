@@ -9,6 +9,8 @@ import com.homemenuplanner.models.Recipe;
 import com.homemenuplanner.models.RecipeIngredient;
 import com.homemenuplanner.models.RecipeIngredientId;
 import com.homemenuplanner.repositories.RecipeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -75,5 +77,9 @@ public class RecipeService {
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public Page<Recipe> searchRecipesByName(String name, Pageable pageable) {
+        return recipeRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 }
