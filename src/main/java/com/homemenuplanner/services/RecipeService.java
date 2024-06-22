@@ -37,7 +37,7 @@ public class RecipeService {
         recipe.setName(recipeRequest.getName());
         recipe.setInstructions(recipeRequest.getInstructions());
         recipe.setDescription(recipeRequest.getDescription());
-        recipe.setCookbook(recipeRequest.getCookbook());
+        recipe.setCookbookName(recipeRequest.getCookbook());
         recipe.setPage(recipeRequest.getPage());
         recipe.setUrl(recipeRequest.getUrl());
         recipe.setImageFileName(recipeRequest.getImageFileName());

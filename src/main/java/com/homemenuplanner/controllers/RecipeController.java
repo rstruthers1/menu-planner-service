@@ -36,7 +36,7 @@ public class RecipeController {
     @GetMapping("/search")
     public ResponseEntity<Page<RecipeResponse>> searchRecipesByName(@RequestParam String name, Pageable pageable) {
         Page<Recipe> recipes = recipeService.searchRecipesByName(name, pageable);
-        Page<RecipeResponse> recipeResponses = recipes.map(recipe -> new RecipeResponse(recipe.getId(), recipe.getName(), recipe.getInstructions(), recipe.getDescription(), recipe.getCookbook(), recipe.getPage(), recipe.getUrl(), recipe.getImageFileName(), null));
+        Page<RecipeResponse> recipeResponses = recipes.map(recipe -> new RecipeResponse(recipe.getId(), recipe.getName(), recipe.getInstructions(), recipe.getDescription(), recipe.getCookbookName(), recipe.getPage(), recipe.getUrl(), recipe.getImageFileName(), null));
         return new ResponseEntity<>(recipeResponses, HttpStatus.OK);
     }
 }

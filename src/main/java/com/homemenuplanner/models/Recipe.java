@@ -28,7 +28,7 @@ public class Recipe {
     private String url;
 
     @Column(name = "cookbook")
-    private String cookbook;
+    private String cookbookName;
 
     @Column(name = "page")
     private Integer page;
@@ -43,6 +43,10 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> recipeIngredients;
+
+    @ManyToOne
+    @JoinColumn(name="cookbook_id")
+    private Cookbook cookbook;
 
     public Long getId() {
         return id;
@@ -84,12 +88,12 @@ public class Recipe {
         this.url = url;
     }
 
-    public String getCookbook() {
-        return cookbook;
+    public String getCookbookName() {
+        return cookbookName;
     }
 
-    public void setCookbook(String cookbook) {
-        this.cookbook = cookbook;
+    public void setCookbookName(String cookbook) {
+        this.cookbookName = cookbook;
     }
 
     public Integer getPage() {
@@ -125,4 +129,11 @@ public class Recipe {
     }
 
 
+    public Cookbook getCookbook() {
+        return cookbook;
+    }
+
+    public void setCookbook(Cookbook cookbook) {
+        this.cookbook = cookbook;
+    }
 }
