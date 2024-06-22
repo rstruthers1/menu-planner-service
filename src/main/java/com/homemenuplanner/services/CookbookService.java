@@ -4,6 +4,8 @@ import com.homemenuplanner.dtos.cookbook.CookbookRequest;
 import com.homemenuplanner.dtos.cookbook.CookbookResponse;
 import com.homemenuplanner.models.Cookbook;
 import com.homemenuplanner.repositories.CookbookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,5 +29,9 @@ public class CookbookService {
         cookbookResponse.setImageFileName(savedCookbook.getImageFileName());
 
         return cookbookResponse;
+    }
+
+    public Page<Cookbook> searchCookbooksByName(String name, Pageable pageable) {
+        return cookbookRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 }

@@ -5,6 +5,15 @@ public class CookbookResponse {
     private String name;
     private String imageFileName;
 
+    public CookbookResponse() {
+    }
+
+    public CookbookResponse(Long id, String name, String imageFileName) {
+        this.id = id;
+        this.name = name;
+        this.imageFileName = imageFileName;
+    }
+
     public Long getId() {
         return id;
     }
