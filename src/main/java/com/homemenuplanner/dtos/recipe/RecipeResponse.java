@@ -1,5 +1,6 @@
 package com.homemenuplanner.dtos.recipe;
 
+import com.homemenuplanner.dtos.cookbook.CookbookResponse;
 import com.homemenuplanner.dtos.ingredient.RecipeIngredientResponse;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public class RecipeResponse {
     private String name;
     private String instructions;
     private String description;
-    private String cookbook;
+    private CookbookResponse cookbook;
     private Integer page;
     private String url;
     private String imageFileName;
@@ -19,12 +20,12 @@ public class RecipeResponse {
     public RecipeResponse() {
     }
 
-    public RecipeResponse(Long id, String name, String instructions, String description, String cookbook, Integer page, String url, String imageFileName, List<RecipeIngredientResponse> ingredients) {
+    public RecipeResponse(Long id, String name, String instructions, String description, CookbookResponse cookbookResponse, Integer page, String url, String imageFileName, List<RecipeIngredientResponse> ingredients) {
         this.id = id;
         this.name = name;
         this.instructions = instructions;
         this.description = description;
-        this.cookbook = cookbook;
+        this.cookbook = cookbookResponse;
         this.page = page;
         this.url = url;
         this.imageFileName = imageFileName;
@@ -79,13 +80,7 @@ public class RecipeResponse {
         this.description = description;
     }
 
-    public String getCookbook() {
-        return cookbook;
-    }
 
-    public void setCookbook(String cookbook) {
-        this.cookbook = cookbook;
-    }
 
     public Integer getPage() {
         return page;
@@ -109,6 +104,14 @@ public class RecipeResponse {
 
     public void setImageFileName(String imageFileName) {
         this.imageFileName = imageFileName;
+    }
+
+    public CookbookResponse getCookbook() {
+        return cookbook;
+    }
+
+    public void setCookbook(CookbookResponse cookbook) {
+        this.cookbook = cookbook;
     }
 }
 

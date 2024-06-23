@@ -2,6 +2,7 @@ package com.homemenuplanner.mappers;
 
 
 
+import com.homemenuplanner.dtos.cookbook.CookbookResponse;
 import com.homemenuplanner.dtos.ingredient.RecipeIngredientRequest;
 import com.homemenuplanner.dtos.ingredient.RecipeIngredientResponse;
 import com.homemenuplanner.dtos.recipe.RecipeRequest;
@@ -42,6 +43,13 @@ public class RecipeMapper {
         response.setId(recipe.getId());
         response.setName(recipe.getName());
         response.setInstructions(recipe.getInstructions());
+        response.setDescription(recipe.getDescription());
+        if (recipe.getCookbook() != null) {
+            CookbookResponse cookbookResponse = new CookbookResponse();
+            cookbookResponse.setId(recipe.getCookbook().getId());
+            cookbookResponse.setName(recipe.getCookbook().getName());
+            cookbookResponse.setImageFileName(recipe.getCookbook().getImageFileName());
+        }
         Set<RecipeIngredient> recipeIngredients = recipe.getRecipeIngredients();
         if (recipeIngredients == null) {
             return response;

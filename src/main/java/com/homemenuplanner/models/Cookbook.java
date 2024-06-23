@@ -18,7 +18,7 @@ public class Cookbook {
     @Column(name = "image_file_name")
     private String imageFileName;
 
-    @OneToMany(mappedBy = "cookbookName", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Recipe> recipes;
 
     public Long getId() {

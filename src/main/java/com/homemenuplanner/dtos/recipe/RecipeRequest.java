@@ -9,7 +9,7 @@ public class RecipeRequest {
     private String instructions;
     private String description;
     private String url;
-    private String cookbook;
+    private Long cookbookId;
     private Integer page;
     private String imageFileName;
     private List<RecipeIngredientRequest> ingredients;
@@ -56,12 +56,12 @@ public class RecipeRequest {
         this.url = url;
     }
 
-    public String getCookbook() {
-        return cookbook;
+    public Long getCookbookId() {
+        return cookbookId;
     }
 
-    public void setCookbook(String cookbook) {
-        this.cookbook = cookbook;
+    public void setCookbookId(Long cookbookId) {
+        this.cookbookId = cookbookId;
     }
 
     public Integer getPage() {
