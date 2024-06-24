@@ -32,4 +32,10 @@ public class CookbookController {
         Page<CookbookResponse> cookbookResponses = cookbooks.map(cookbook -> new CookbookResponse(cookbook.getId(), cookbook.getName(), cookbook.getImageFileName()));
         return new ResponseEntity<>(cookbookResponses, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CookbookResponse> updateCookbook(@PathVariable Long id, @RequestBody CookbookRequest cookbookRequest) {
+        CookbookResponse updatedCookbook = cookbookService.updateCookbook(id, cookbookRequest);
+        return new ResponseEntity<>(updatedCookbook, HttpStatus.OK);
+    }
 }
