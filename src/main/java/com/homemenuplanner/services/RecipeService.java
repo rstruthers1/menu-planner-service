@@ -3,6 +3,7 @@ package com.homemenuplanner.services;
 import com.homemenuplanner.dtos.ingredient.RecipeIngredientRequest;
 import com.homemenuplanner.dtos.recipe.RecipeRequest;
 import com.homemenuplanner.dtos.recipe.RecipeResponse;
+import com.homemenuplanner.exceptions.ResourceNotFoundException;
 import com.homemenuplanner.mappers.RecipeMapper;
 import com.homemenuplanner.models.*;
 import com.homemenuplanner.repositories.CookbookRepository;
@@ -35,10 +36,18 @@ public class RecipeService {
 
     public RecipeResponse addRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = new Recipe();
+        return saveRecipeAndMapResponse(recipeRequest, recipe);
+    }
+
+    public RecipeResponse updateRecipe(Long id, RecipeRequest recipeRequest) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recipe not found with id " + id));
+        return saveRecipeAndMapResponse(recipeRequest, recipe);
+    }
+
+    private RecipeResponse saveRecipeAndMapResponse(RecipeRequest recipeRequest, Recipe recipe) {
         recipe.setName(recipeRequest.getName());
         recipe.setInstructions(recipeRequest.getInstructions());
         recipe.setDescription(recipeRequest.getDescription());
-
         recipe.setPage(recipeRequest.getPage());
         recipe.setUrl(recipeRequest.getUrl());
         recipe.setImageFileName(recipeRequest.getImageFileName());
@@ -55,7 +64,6 @@ public class RecipeService {
             for (RecipeIngredientRequest recipeIngredientRequest : recipeRequest.getIngredients()) {
                 RecipeIngredient recipeIngredient = getRecipeIngredient(recipeIngredientRequest, savedRecipe);
                 recipeIngredients.add(recipeIngredient);
-
             }
             savedRecipe.setRecipeIngredients(recipeIngredients);
 

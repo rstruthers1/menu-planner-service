@@ -59,4 +59,10 @@ public class RecipeController {
         });
         return new ResponseEntity<>(recipeResponses, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RecipeResponse> updateRecipe(@PathVariable(name="id") Long id, @RequestBody RecipeRequest recipeRequest) {
+        RecipeResponse updatedRecipe = recipeService.updateRecipe(id, recipeRequest);
+        return new ResponseEntity<>(updatedRecipe, HttpStatus.OK);
+    }
 }
