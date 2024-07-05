@@ -8,6 +8,7 @@ import com.homemenuplanner.mappers.RecipeMapper;
 import com.homemenuplanner.models.*;
 import com.homemenuplanner.repositories.CookbookRepository;
 import com.homemenuplanner.repositories.RecipeRepository;
+import com.homemenuplanner.repositories.UserGroupRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,13 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final CookbookRepository cookbookRepository;
+    private final UserGroupRepository groupRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, CookbookRepository cookbookRepository) {
+    public RecipeService(RecipeRepository recipeRepository, CookbookRepository cookbookRepository,
+                         UserGroupRepository groupRepository) {
         this.recipeRepository = recipeRepository;
         this.cookbookRepository = cookbookRepository;
+        this.groupRepository = groupRepository;
     }
 
     // Converts Recipe entity to RecipeResponse
@@ -51,11 +55,20 @@ public class RecipeService {
         recipe.setPage(recipeRequest.getPage());
         recipe.setUrl(recipeRequest.getUrl());
         recipe.setImageFileName(recipeRequest.getImageFileName());
+        recipe.setIsPublic(recipeRequest.getIsPublic());
+
+        // Set the group if the groupId is not null
+        if (recipeRequest.getGroupId() != null) {
+            UserGroup userGroup = groupRepository.findById(recipeRequest.getGroupId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Group not found with id " + recipeRequest.getGroupId()));
+            recipe.setUserGroup(userGroup);
+        }
 
         // Set the cookbook if the cookbookId is not null
         if (recipeRequest.getCookbookId() != null) {
-            Optional<Cookbook> cookbookOptional = cookbookRepository.findById(recipeRequest.getCookbookId());
-            cookbookOptional.ifPresent(recipe::setCookbook);
+            Cookbook cookbook = cookbookRepository.findById(recipeRequest.getCookbookId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Cookbook not found with id " + recipeRequest.getCookbookId()));
+            recipe.setCookbook(cookbook);
         }
 
         Recipe savedRecipe = recipeRepository.save(recipe);

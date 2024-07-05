@@ -12,6 +12,8 @@ public class RecipeRequest {
     private Long cookbookId;
     private Integer page;
     private String imageFileName;
+    private Long groupId;
+    private Boolean isPublic;
     private List<RecipeIngredientRequest> ingredients;
 
     // Getters and Setters
@@ -78,5 +80,21 @@ public class RecipeRequest {
 
     public void setImageFileName(String imageFileName) {
         this.imageFileName = imageFileName;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 }

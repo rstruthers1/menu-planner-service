@@ -48,6 +48,13 @@ public class Recipe {
     @JoinColumn(name="cookbook_id")
     private Cookbook cookbook;
 
+    @ManyToOne
+    @JoinColumn(name="group_id")
+    private UserGroup userGroup;
+
+    private Boolean isPublic;
+
+
     public Long getId() {
         return id;
     }
@@ -135,5 +142,21 @@ public class Recipe {
 
     public void setCookbook(Cookbook cookbook) {
         this.cookbook = cookbook;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 }

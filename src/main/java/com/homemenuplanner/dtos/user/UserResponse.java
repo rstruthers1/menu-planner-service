@@ -1,12 +1,12 @@
 package com.homemenuplanner.dtos.user;
 
-public class GetUserResponse {
+public class UserResponse {
     private Long id;
     private String email;
     private String firstName;
     private String lastName;
 
-    public GetUserResponse(Long id, String email, String firstName, String lastName) {
+    public UserResponse(Long id, String email, String firstName, String lastName) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
