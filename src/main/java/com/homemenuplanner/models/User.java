@@ -3,6 +3,9 @@ package com.homemenuplanner.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,10 +18,17 @@ public class User {
     private String firstName;
     private String lastName;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_group_members",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private Set<UserGroup> userGroups =  new HashSet<>();
+
     public User() {
 
     }
-
 
     public User(String email, String password) {
         this.email = email;
@@ -65,5 +75,13 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public Set<UserGroup> getUserGroups() {
+        return userGroups;
+    }
+
+    public void setUserGroups(Set<UserGroup> userGroups) {
+        this.userGroups = userGroups;
     }
 }
