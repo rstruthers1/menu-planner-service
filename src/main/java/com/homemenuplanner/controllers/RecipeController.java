@@ -55,7 +55,9 @@ public class RecipeController {
                         recipe.getPage(),
                         recipe.getUrl(),
                         recipe.getImageFileName(),
-                        null);
+                        null,
+                        recipe.getUserGroup() != null ? recipe.getUserGroup().getId() : null,
+                        recipe.getIsPublic());
         });
         return new ResponseEntity<>(recipeResponses, HttpStatus.OK);
     }

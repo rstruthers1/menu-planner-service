@@ -14,13 +14,15 @@ public class RecipeResponse {
     private Integer page;
     private String url;
     private String imageFileName;
+    private Long groupId;
+    private Boolean isPublic;
 
     private List<RecipeIngredientResponse> ingredients;
 
     public RecipeResponse() {
     }
 
-    public RecipeResponse(Long id, String name, String instructions, String description, CookbookResponse cookbookResponse, Integer page, String url, String imageFileName, List<RecipeIngredientResponse> ingredients) {
+    public RecipeResponse(Long id, String name, String instructions, String description, CookbookResponse cookbookResponse, Integer page, String url, String imageFileName, List<RecipeIngredientResponse> ingredients, Long groupId, Boolean isPublic) {
         this.id = id;
         this.name = name;
         this.instructions = instructions;
@@ -30,6 +32,9 @@ public class RecipeResponse {
         this.url = url;
         this.imageFileName = imageFileName;
         this.ingredients = ingredients;
+        this.groupId = groupId;
+        this.isPublic = isPublic;
+
     }
 
     public RecipeResponse(Long id, String name, String instructions, List<RecipeIngredientResponse> ingredients) {
@@ -112,6 +117,22 @@ public class RecipeResponse {
 
     public void setCookbook(CookbookResponse cookbook) {
         this.cookbook = cookbook;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 }
 

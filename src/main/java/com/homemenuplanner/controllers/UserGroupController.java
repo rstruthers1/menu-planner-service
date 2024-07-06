@@ -46,6 +46,14 @@ public class UserGroupController {
         return ResponseEntity.ok(groups);
     }
 
+    @GetMapping("/mygroups")
+    public ResponseEntity<List<UserGroupResponse>> getUsersGroups() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername();
+        List<UserGroupResponse> groups = userGroupService.listUsersGroups(username);
+        return ResponseEntity.ok(groups);
+    }
+
     @PostMapping("/{groupId}/members/{userId}")
     public ResponseEntity<UserGroupResponse> addMemberToGroup(@PathVariable(name="groupId") Long groupId, @PathVariable(name="userId") Long userId) {
         Optional<UserGroupResponse> group = userGroupService.addMemberToGroup(groupId, userId);
