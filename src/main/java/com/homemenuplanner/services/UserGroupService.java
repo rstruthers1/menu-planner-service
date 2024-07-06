@@ -57,6 +57,16 @@ public class UserGroupService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserGroupResponse> listUsersGroups(String username) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return user.getUserGroups().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public Optional<UserGroupResponse> addMemberToGroup(Long groupId, Long userId) {
         Optional<UserGroup> groupOpt = userGroupRepository.findById(groupId);
