@@ -34,9 +34,24 @@ public class RecipeController {
         return recipeService.getAllRecipes();
     }
 
+
     @GetMapping("/search")
-    public ResponseEntity<Page<RecipeResponse>> searchRecipesByName(@RequestParam(name="name") String name, Pageable pageable) {
-        Page<Recipe> recipes = recipeService.searchRecipesByName(name, pageable);
+    public ResponseEntity<Page<RecipeResponse>> searchRecipesByName(@RequestParam(name="name") String name,
+                                                                    @RequestParam(name = "groupId", required = false) Long groupId,
+                                                                    @RequestParam(name = "includePublic", defaultValue = "false") boolean includePublic,
+                                                                    Pageable pageable) {
+        Page<Recipe> recipes;
+        if (groupId != null) {
+            if (includePublic) {
+                recipes = recipeService.searchRecipesByNameAndGroupOrPublic(name, groupId, pageable);
+            }
+            else {
+                recipes = recipeService.searchRecipesByNameAndGroup(name, groupId, pageable);
+            }
+        } else {
+            recipes = recipeService.searchPublicRecipesByName(name, pageable);
+        }
+
         Page<RecipeResponse> recipeResponses = recipes.map(recipe -> {
             CookbookResponse cookbookResponse = null;
                 if (recipe.getCookbook() != null) {

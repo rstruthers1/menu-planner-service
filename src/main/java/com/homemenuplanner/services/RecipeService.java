@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -110,4 +109,17 @@ public class RecipeService {
     public Page<Recipe> searchRecipesByName(String name, Pageable pageable) {
         return recipeRepository.findByNameContainingIgnoreCase(name, pageable);
     }
+
+    public Page<Recipe> searchRecipesByNameAndGroupOrPublic(String name, Long groupId, Pageable pageable) {
+        return recipeRepository.findByNameContainingIgnoreCaseAndUserGroupOrIsPublic(name, groupId, pageable);
+    }
+
+    public Page<Recipe> searchRecipesByNameAndGroup(String name, Long groupId, Pageable pageable) {
+        return recipeRepository.findByNameContainingIgnoreCaseAndUserGroup(name, groupId, pageable);
+    }
+
+    public Page<Recipe> searchPublicRecipesByName(String name, Pageable pageable) {
+        return recipeRepository.findByNameContainingIgnoreCaseAndIsPublic(name, pageable);
+    }
+
 }
