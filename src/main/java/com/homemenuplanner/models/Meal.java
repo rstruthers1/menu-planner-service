@@ -29,6 +29,14 @@ public class Meal {
     )
     private List<Recipe> recipes;
 
+    @ManyToOne
+    @JoinColumn(name = "suggested_by_user_id")
+    private User suggestedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private UserGroup userGroup;
+
     public Meal() {}
 
     public Meal(String name, String url, String description) {
@@ -75,5 +83,21 @@ public class Meal {
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
+    }
+
+    public User getSuggestedBy() {
+        return suggestedBy;
+    }
+
+    public void setSuggestedBy(User suggestedBy) {
+        this.suggestedBy = suggestedBy;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 }
