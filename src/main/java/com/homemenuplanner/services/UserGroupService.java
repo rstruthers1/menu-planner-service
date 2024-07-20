@@ -10,6 +10,7 @@ import com.homemenuplanner.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,6 +64,7 @@ public class UserGroupService {
             throw new RuntimeException("User not found");
         }
         return user.getUserGroups().stream()
+                .sorted(Comparator.comparing(UserGroup::getName))
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
