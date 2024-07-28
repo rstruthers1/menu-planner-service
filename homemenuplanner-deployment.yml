@@ -99,13 +99,14 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:777605092423:certificate/4e588450-d436-4d08-affe-b4a5858f2d65
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:777605092423:certificate/9d381ee5-973e-400e-b658-ec76686088f2
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
 spec:
   tls:
     - hosts:
         - k8s-default-homemenu-1969234ccc-1510590667.us-east-1.elb.amazonaws.com
         - a3aa4e8a7b7754ffcb82f0a684deb5f3-1361823968.us-east-1.elb.amazonaws.com
+        - api.homemenuplanner.com
       secretName: homemenuplanner-tls-secret
   rules:
     - host: k8s-default-homemenu-1969234ccc-1510590667.us-east-1.elb.amazonaws.com
@@ -128,4 +129,16 @@ spec:
                 name: homemenuplanner-service
                 port:
                   number: 80
+    - host: api.homemenuplanner.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homemenuplanner-service
+                port:
+                  number: 80
+
+
 
