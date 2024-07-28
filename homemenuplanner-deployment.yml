@@ -104,31 +104,9 @@ metadata:
 spec:
   tls:
     - hosts:
-        - k8s-default-homemenu-1969234ccc-1510590667.us-east-1.elb.amazonaws.com
-        - a3aa4e8a7b7754ffcb82f0a684deb5f3-1361823968.us-east-1.elb.amazonaws.com
         - api.homemenuplanner.com
       secretName: homemenuplanner-tls-secret
   rules:
-    - host: k8s-default-homemenu-1969234ccc-1510590667.us-east-1.elb.amazonaws.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: homemenuplanner-service
-                port:
-                  number: 80
-    - host: a3aa4e8a7b7754ffcb82f0a684deb5f3-1361823968.us-east-1.elb.amazonaws.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: homemenuplanner-service
-                port:
-                  number: 80
     - host: api.homemenuplanner.com
       http:
         paths:
